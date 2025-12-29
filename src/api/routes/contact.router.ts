@@ -10,18 +10,14 @@ export class ContactRouter extends RouterBroker {
   constructor(...guards: RequestHandler[]) {
     super();
     this.router.post(this.routerPath('save'), ...guards, async (req, res) => {
-      try {
-        const response = await this.dataValidate<SaveContactDto>({
-          request: req,
-          schema: saveContactSchema,
-          ClassRef: SaveContactDto,
-          execute: (instance, data) => contactController.saveContact(instance, data),
-        });
+      const response = await this.dataValidate<SaveContactDto>({
+        request: req,
+        schema: saveContactSchema,
+        ClassRef: SaveContactDto,
+        execute: (instance, data) => contactController.saveContact(instance, data),
+      });
 
-        return res.status(HttpStatus.OK).json(response);
-      } catch (error) {
-        return res.status(HttpStatus.BAD_REQUEST).json(error);
-      }
+      return res.status(HttpStatus.CREATED).json(response);
     });
   }
 

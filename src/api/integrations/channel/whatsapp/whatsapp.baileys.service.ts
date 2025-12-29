@@ -3787,7 +3787,7 @@ export class BaileysStartupService extends ChannelStartupService {
     } catch (error) {
       throw new InternalServerErrorException({
         saved: false,
-        message: ['An error occurred while saving the contact.', error.toString()],
+        message: ['An error occurred while saving the contact.', 'Open a calling.', error.toString()],
       });
     }
   }

@@ -1699,6 +1699,9 @@ export class BusinessStartupService extends ChannelStartupService {
   public async updateProfilePicture() {
     throw new BadRequestException('Method not available on WhatsApp Business API');
   }
+  public async saveContact() {
+    throw new BadRequestException('Method not available on WhatsApp Business API');
+  }
   public async removeProfilePicture() {
     throw new BadRequestException('Method not available on WhatsApp Business API');
   }
