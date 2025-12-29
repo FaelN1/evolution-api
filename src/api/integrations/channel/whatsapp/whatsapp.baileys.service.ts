@@ -154,6 +154,7 @@ import { v4 } from 'uuid';
 
 import { BaileysMessageProcessor } from './baileysMessage.processor';
 import { useVoiceCallsBaileys } from './voiceCalls/useVoiceCallsBaileys';
+import { SaveContactDto } from '@api/dto/contact.dto';
 
 export interface ExtendedIMessageKey extends proto.IMessageKey {
   remoteJidAlt?: string;
@@ -3764,6 +3765,29 @@ export class BaileysStartupService extends ChannelStartupService {
       throw new InternalServerErrorException({
         markedChatUnread: false,
         message: ['An error occurred while marked unread the chat. Open a calling.', error.toString()],
+      });
+    }
+  }
+  
+  public async saveContact(data: SaveContactDto) {
+    try {
+      const jid = createJid(data.number);
+      await this.client.chatModify(
+        {
+          contact: {
+            fullName: data.name || 'Unknown',
+            firstName: (data.name || 'Unknown').split(' ')[0],
+            saveOnPrimaryAddressbook: data.saveOnDevice ?? true,
+          },
+        },
+        jid,
+      );
+
+      return { saved: true, number: data.number, name: data.name };
+    } catch (error) {
+      throw new InternalServerErrorException({
+        saved: false,
+        message: ['An error occurred while saving the contact.', error.toString()],
       });
     }
   }
